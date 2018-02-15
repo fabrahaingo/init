@@ -1,0 +1,14 @@
+#!/bin/bash
+FILE=/etc/crontab
+{
+	if ls ~/md5sum_hash.txt; then
+		if md5sum -c md5sum_hash.txt; then
+			:
+		else
+			mail -s "Alert: /etc/crontab has been modified" frahaing@student.42.fr
+			md5sum $FILE > ~/md5sum_hash.txt
+		fi
+	else
+		md5sum $FILE > ~/md5sum_hash.txt
+	fi
+} &> /dev/null
